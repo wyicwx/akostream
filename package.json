@@ -1,0 +1,25 @@
+{
+  "name": "AKOStream",
+  "version": "0.0.1",
+  "description": "all kinds of stream",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test-all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wyicwx/AKOStream.git"
+  },
+  "keywords": [
+    "stream"
+  ],
+  "author": "wyicwx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wyicwx/AKOStream/issues"
+  },
+  "homepage": "https://github.com/wyicwx/AKOStream"
+}
