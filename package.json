@@ -17,6 +17,11 @@
     "stream"
   ],
   "author": "wyicwx",
+  "config": {
+    "blanket": {
+      "pattern": "AKOStream/lib"
+    }
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/wyicwx/AKOStream/issues"

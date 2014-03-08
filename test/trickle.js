@@ -8,16 +8,19 @@ describe('triclke', function() {
 				highWaterMark: highWaterMark
 			});
 			var availd = true;
+			var length = 0;
 
 			stream.on('data', function(trunk) {
-				var length = trunk.length;
-				if(length <= 0 && length > highWaterMark) {
+				var l = trunk.length;
+
+				if(l <= 0 && l > highWaterMark) {
 					availd = false;
 				}
+				length -= l;
 			});
 
 			stream.on('end', function() {
-				if(availd) {
+				if(availd && !length) {
 					done();
 				} else {
 					done(false);
@@ -27,6 +30,7 @@ describe('triclke', function() {
 			var count = 100;
 			while(count) {
 				var random = parseInt(Math.random()*100);
+				length += random;
 				stream.write(new Buffer(random));
 				count--;
 				if(!count) {
@@ -93,7 +97,7 @@ describe('triclke', function() {
 			});
 
 			stream.on('end', function() {
-				if(availd) {
+				if(availd && !length) {
 					done();
 				} else {
 					done(false);
@@ -119,6 +123,7 @@ describe('triclke', function() {
 		var random = 0;
 
 		stream.on('data', function(chunk) {
+			console.log('data');
 			if(chunk.length != random) {
 				availd = false;
 			}
@@ -134,19 +139,17 @@ describe('triclke', function() {
 
 		var count = 100;
 		function next() {
-			setTimeout(function() {
-				random = parseInt(Math.random()*1000);
-				stream.write(new Buffer(random));
-				count--;
-				if(!count) {
-					stream.end();
-				} else {
-					next();
-				}
-			}, 1);
+			random = parseInt(Math.random()*1000);
+			stream.write(new Buffer(random));
+			console.log('write');
+			count--;
+			if(!count) {
+				stream.end();
+			} else {
+				next();
+			}
 		}
 
 		next();
 	});
-
 });
