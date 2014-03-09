@@ -1,5 +1,5 @@
 {
-  "name": "AKOStream",
+  "name": "akostream",
   "version": "0.0.1",
   "description": "all kinds of stream",
   "main": "index.js",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wyicwx/AKOStream.git"
+    "url": "https://github.com/wyicwx/akostream.git"
   },
   "keywords": [
     "stream"
@@ -27,12 +27,12 @@
   "author": "wyicwx",
   "config": {
     "blanket": {
-      "pattern": "AKOStream/lib"
+      "pattern": "akostream/lib"
     }
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wyicwx/AKOStream/issues"
+    "url": "https://github.com/wyicwx/akostream/issues"
   },
-  "homepage": "https://github.com/wyicwx/AKOStream"
+  "homepage": "https://github.com/wyicwx/akostream"
 }
