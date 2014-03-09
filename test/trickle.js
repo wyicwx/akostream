@@ -1,4 +1,4 @@
-var trickleStream = require('../lib/trickleStream.js');
+var trickleStream = require('../').trickle;
 
 describe('triclke', function() {
 	describe('输入在水平线之下，输出同输入', function() {
