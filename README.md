@@ -1,6 +1,6 @@
 #AKOStream
-=========
 ![travis](https://api.travis-ci.org/wyicwx/AKOStream.png)  
+=========
 
 各种各样的流(all kinds of stream)
 

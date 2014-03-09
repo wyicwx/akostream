@@ -6,6 +6,14 @@
   "directories": {
     "test": "test"
   },
+  "dependencies": {
+    "through2": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "blanket": "*",
+    "rewire": "*"
+  },
   "scripts": {
     "test": "make test-all"
   },
