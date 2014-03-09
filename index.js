@@ -7,16 +7,15 @@ function trickleStream(size) {
 			this._transform(chunk.slice(size, chunk.length), encoding, callback);
 		} else {
 			callback(null, chunk);
-		}	
+		}
 	});
 }
 
 module.exports.trickle = trickleStream;
 
-
-
-function intervalStream(interval) {
+function delayStream(interval) {
 	var timestamp;
+	interval = interval || 0;
 	return through2(function(chunk, encoding, callback) {
 		var Self = this,
 			now = Date.now();
@@ -31,10 +30,10 @@ function intervalStream(interval) {
 		}
 		timestamp = now;
 
-		setTiemout(function() {
+		setTimeout(function() {
 			callback(null, chunk);
 		}, delay);
 	});
 }
 
-module.exports.interval = intervalStream;
+module.exports.delay = delayStream;

@@ -1,6 +1,6 @@
 var trickleStream = require('../').trickle;
 
-describe('triclke', function() {
+describe('trickle', function() {
 	describe('输入在水平线之下，输出同输入', function() {
 		it('输入大小随机', function(done) {
 			var highWaterMark = 100;
@@ -110,6 +110,40 @@ describe('triclke', function() {
 			}
 		});
 	});
+
+	it('水平线上下波动情况', function(done) {
+		var highWaterMark = 100;
+		var stream = trickleStream(highWaterMark);
+		var length = 0;
+		var availd = true;
+
+		stream.on('data', function(chunk) {
+			if(chunk > highWaterMark || chunk.length >= length) {
+				availd = false;
+			}
+			length -= chunk.length;
+		});
+
+		stream.on('end', function() {
+			if(!availd && !length) {
+				done();
+			} else {
+				done(false);
+			}
+		});
+
+		var count = 100;
+		while(count) {
+			var random = parseInt(Math.random()*100);
+			length += random+50;
+			stream.write(new Buffer(random+50));
+			count--;
+			if(!count) {
+				stream.end();
+			}
+		}
+	});
+
 
 	it('没有设置水平线情况下，写入多少则输出多少', function(done) {
 		var stream = trickleStream();
