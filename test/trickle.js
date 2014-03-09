@@ -1,12 +1,10 @@
-var TrickleStream = require('../lib/TrickleStream.js');
+var trickleStream = require('../lib/trickleStream.js');
 
 describe('triclke', function() {
 	describe('输入在水平线之下，输出同输入', function() {
 		it('输入大小随机', function(done) {
 			var highWaterMark = 100;
-			var stream = new TrickleStream({
-				highWaterMark: highWaterMark
-			});
+			var stream = trickleStream(highWaterMark);
 			var availd = true;
 			var length = 0;
 
@@ -41,9 +39,7 @@ describe('triclke', function() {
 
 		it('输入固定值', function(done) {
 			var highWaterMark = 100;
-			var stream = new TrickleStream({
-				highWaterMark: highWaterMark
-			});
+			var stream = trickleStream(highWaterMark);
 			var availd = true;
 			var random = parseInt(Math.random()*100);
 
@@ -76,9 +72,7 @@ describe('triclke', function() {
 	describe('输入在水平线至上，按水平线大小输出', function() {
 		it('输入大小随机', function(done) {
 			var highWaterMark = 1000;
-			var stream = new TrickleStream({
-				highWaterMark: highWaterMark
-			});
+			var stream = trickleStream(highWaterMark);
 			var length = 0;
 			var availd = true;
 			var random = parseInt(Math.random()*100);
@@ -118,12 +112,11 @@ describe('triclke', function() {
 	});
 
 	it('没有设置水平线情况下，写入多少则输出多少', function(done) {
-		var stream = new TrickleStream();
+		var stream = trickleStream();
 		var availd = true;
 		var random = 0;
 
 		stream.on('data', function(chunk) {
-			console.log('data');
 			if(chunk.length != random) {
 				availd = false;
 			}
@@ -141,7 +134,6 @@ describe('triclke', function() {
 		function next() {
 			random = parseInt(Math.random()*1000);
 			stream.write(new Buffer(random));
-			console.log('write');
 			count--;
 			if(!count) {
 				stream.end();
