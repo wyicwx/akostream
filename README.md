@@ -30,4 +30,14 @@ writeableStream.pipe(trickle).pipe(readableStream);
 延迟输出，delay控制延迟时间
 
 
+*combine*
+```
+var toCombine = [readSteam1, readStream2, readStream3, readStream4];
+var combine = akostream.combine(toCombine);
+
+combine.pipe(readableStream);
+```
+按顺序顺序合并流
+
+
 
