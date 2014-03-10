@@ -37,3 +37,36 @@ function delayStream(interval) {
 }
 
 module.exports.delay = delayStream;
+
+function combineStream(srcStream) {
+	if(!Array.isArray(srcStream)) {
+		srcStream = [srcStream];
+	}
+// console.log('length');
+// console.log(srcStream.length);
+	var destStream = through2(function(chunk, encoding, callback) {
+		callback(null, chunk);
+	});
+
+	_flow(srcStream, destStream);
+
+	return destStream;
+}
+
+function _flow(srcs, dest) {
+	var src = srcs.shift();
+
+	if(!src) {
+		dest.end();
+	} else {
+		if(!src.readable) {
+			throw new Error('streams must be readable');
+		}
+		src.pipe(dest, {end: false});
+		src.on('end', function() {
+			_flow(srcs, dest);
+		});
+	}
+}
+
+module.exports.combine = combineStream;
