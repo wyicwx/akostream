@@ -1,5 +1,5 @@
 var combineStream = require('../').combine;
-var trickleStream = require('../').trickle;
+var through2 = require('through2');
 
 describe('combine', function() {
 	it('多个可写流合并, 顺序写入', function(done) {
@@ -8,7 +8,7 @@ describe('combine', function() {
 			length = parseInt(Math.random() * 100) + 1;
 
 		for(var i = 0; i<length; i++) {
-			srcStream[i] = trickleStream();
+			srcStream[i] = through2();
 		}
 		
 		for(var i = 0; i<length; i++) {
@@ -21,15 +21,16 @@ describe('combine', function() {
 
 		var count = 0,
 			availd = true;
+
 		dest.on('data', function(chunk) {
-			if(chunk.toString() != buffer[count].toString()) {
+			if(chunk.length != buffer[count].length) {
 				availd = false;
 			}
 			count++;
 		});
 
 		dest.on('end', function() {
-			if(availd) {
+			if(availd && count == i) {
 				done();
 			} else {
 				done(false);
@@ -45,44 +46,37 @@ describe('combine', function() {
 			length = parseInt(Math.random() * 100) + 1;
 
 		for(var i = 0; i<length; i++) {
-			srcStream[i] = trickleStream();
+			srcStream.push(through2());
 
 			random = parseInt(Math.random()*3) + 1;
-			bf = new Buffer(String(i));
-			for(var j = 0; j<random; j++) {
-				buffer.push(bf);
-			}
-
-			_write(srcStream[i], bf, random, 0);
+			_write(srcStream[i], random, 0);
 		}
 
-		function _write(stream, buffer, count, time) {
+		function _write(stream, count, time) {
 			if(time == count) {
 				stream.end();
 				return;
 			}
 			var timeout = parseInt(Math.random()*5)+1;
 			setTimeout(function() {
-				stream.write(buffer);
+				var bf = new Buffer(time);
+				stream.write(bf);
+				buffer.push(bf);
 				time++;
-				_write(stream, buffer, count, time);
+				_write(stream, count, time);
 			}, timeout);
 		}
 		
 
 		var dest = combineStream(srcStream);
 
-		var count = 0,
-			availd = true;
+		var chunks = [];
 		dest.on('data', function(chunk) {
-			if(chunk.toString() != buffer[count].toString()) {
-				availd = false;
-			}
-			count++;
+			chunks.push(chunk);
 		});
 
 		dest.on('end', function() {
-			if(availd) {
+			if(Buffer.concat(chunks).length == Buffer.concat(buffer).length) {
 				done();
 			} else {
 				done(false);
@@ -96,7 +90,7 @@ describe('combine', function() {
 			length = parseInt(Math.random() * 100) + 1;
 
 		for(var i = 0; i<length; i++) {
-			srcStream[i] = trickleStream();
+			srcStream[i] = through2();
 		}
 		
 		for(var i = 0; i<length; i++) {
@@ -129,7 +123,7 @@ describe('combine', function() {
 			length = parseInt(Math.random() * 100) + 1;
 
 		for(var i = 0; i<length; i++) {
-			srcStream[i] = trickleStream();
+			srcStream[i] = through2();
 
 			random = parseInt(Math.random()*3) + 1;
 			bf = new Buffer(String(i));
