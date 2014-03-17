@@ -180,4 +180,21 @@ describe('combine', function() {
 			}
 		});
 	});
+
+	it('空数组', function(done) {
+		var dest = combineStream([]);
+		var availd = true;
+
+		dest.on('data', function() {
+			availd = false;
+		});
+
+		dest.on('end', function() {
+			if(availd) {
+				done();
+			} else {
+				done(false);
+			}
+		});
+	});	
 });
