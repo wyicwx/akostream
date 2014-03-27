@@ -1,6 +1,6 @@
 {
   "name": "akostream",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "all kinds of stream",
   "main": "index.js",
   "directories": {
