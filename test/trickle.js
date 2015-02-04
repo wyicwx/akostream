@@ -144,7 +144,6 @@ describe('trickle', function() {
 		}
 	});
 
-
 	it('没有设置水平线情况下，写入多少则输出多少', function(done) {
 		var stream = trickleStream();
 		var availd = true;

@@ -88,12 +88,38 @@ function aggreStream(comining) {
 
 	comining.on('end', function() {
 		buffer = Buffer.concat(buffer);
-
-		stream.write(buffer);
-		stream.end();
+		stream.end(buffer);
 	});
 
 	return stream;
 }
 
 module.exports.aggre = aggreStream;
+
+function whenStream(streamArr, callback) {
+	if(!Array.isArray(streamArr)) {
+		streamArr = [streamArr];
+	}
+	var donelist = [];
+	var end = function() {
+		var isEnd = true;
+		donelist.forEach(function(value) {
+			if(!value) {
+				isEnd = false;
+			}
+		});
+
+		if(isEnd) {
+			callback && callback();
+		}
+	};
+
+	streamArr.forEach(function(stream, key) {
+		stream.on('end', function() {
+			donelist[key] = true;
+			end();
+		});
+	});
+}
+
+module.exports.when = whenStream;
