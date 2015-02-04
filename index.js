@@ -115,6 +115,7 @@ function whenStream(streamArr, callback) {
 	};
 
 	streamArr.forEach(function(stream, key) {
+		donelist[key] = false;
 		stream.on('end', function() {
 			donelist[key] = true;
 			end();
